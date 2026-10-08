@@ -93,6 +93,8 @@ HOOK RANKING
         weakest: STAKES (70)
         dealbreaker: Opens with "stop scrolling". Asking for attention proves
                      you have not earned it.
+        dealbreaker: Emoji in the hook. On-screen text at hook size has room
+                     for words or for an emoji, not both.
      9.6 WEAK    Hey guys, today I wanted to talk about content strategy
         weakest: FRONTLOAD (0)
         dealbreaker: Greeting. Nobody came to the feed to be greeted.
