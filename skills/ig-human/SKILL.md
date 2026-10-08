@@ -88,7 +88,11 @@ PASS, and it is the part a script cannot do.
 
 The verdict weights the mean at 60% and the **weakest single check** at 40%,
 because one signal is enough. PASS needs an overall of 70+ with no check
-below 55.
+below 55. Text with fewer than four sentences or fewer than 25 words gets a
+neutral 50 ("too short to judge") on at least one check, which is under the 55
+floor, so a short caption, comment or DM cannot PASS. Say that rather than
+padding it. A Reel script written one short beat per line usually reads low
+on BURSTINESS; `/ig-reel` explains why.
 
 ## Say this honestly
 

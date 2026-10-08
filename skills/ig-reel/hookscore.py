@@ -43,7 +43,9 @@ NUMBER_RE = re.compile(
     r"(?:%|k\b|x\b|hrs?\b|hours?\b|mins?\b|minutes?\b"  # without a unit
     r"|days?\b|weeks?\b|months?\b|years?\b)?",
     re.IGNORECASE)
-PROPER_RE = re.compile(r"(?<!^)\b[A-Z][a-z]{2,}\b")
+# A capitalised word that starts a sentence ("Now", "Never") is not a name,
+# so skip the start of the line and anything right after . ! or ?
+PROPER_RE = re.compile(r"(?<!^)(?<![.!?]\s)\b[A-Z][a-z]{2,}\b")
 HASHTAG_RE = re.compile(r"(?:^|\s)#\w+")
 EMOJI_RE = re.compile(r"[\U0001F300-\U0001FAFF☀-➿]")
 

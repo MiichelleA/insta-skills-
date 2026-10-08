@@ -28,7 +28,20 @@ import sys
 
 WORD_RE = re.compile(r"[A-Za-z0-9$%'’-]+")
 SENT_RE = re.compile(r"[^.!?]+[.!?]*")
-CONCRETE_RE = re.compile(r"\$\s?\d|\b\d[\d,.]*\b|(?<!^)\b[A-Z][a-z]{2,}\b", re.MULTILINE)
+CONCRETE_RE = re.compile(r"\$\s?\d|\b\d[\d,.]*\b|(?<!^)(?<![.!?]\s)\b[A-Z][a-z]{2,}\b",
+                         re.MULTILINE)
+# Spoken scripts say their numbers out loud. Same lists as hookscore.py, so a
+# beat with "five hours" in it is as concrete here as it is there.
+SPOKEN_NUMBERS = {
+    "zero", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+    "ten", "eleven", "twelve", "fifteen", "twenty", "thirty", "forty", "fifty",
+    "sixty", "seventy", "eighty", "ninety", "hundred", "thousand", "million",
+    "billion", "dozen", "half", "twice", "triple",
+}
+MONEY_WORDS = {
+    "dollars", "dollar", "bucks", "grand", "percent", "cents",
+    "millionaire", "billionaire", "revenue", "profit", "salary", "rent",
+}
 STOPWORDS = {
     "the", "a", "an", "and", "or", "but", "if", "of", "to", "in", "on", "for",
     "with", "that", "this", "it", "is", "are", "was", "were", "be", "been",
@@ -45,6 +58,13 @@ ABSTRACT_RUN = 3         # beats in a row with nothing checkable in them.
 def words(text):
     # "$18,000" is one word when it is spoken, so it is one word here too.
     return WORD_RE.findall(re.sub(r"(?<=\d),(?=\d)", "", text))
+
+
+def concrete(text):
+    """Digits, prices, names, and numbers said as words."""
+    spoken = [w for w in (t.lower().strip("'’") for t in words(text))
+              if w in SPOKEN_NUMBERS or w in MONEY_WORDS]
+    return len(CONCRETE_RE.findall(text)) + len(spoken)
 
 
 def pretty(token):
@@ -98,7 +118,7 @@ def analyse(raw, wpm=165, target=None):
             "dur": round(dur, 2),
             "words": n,
             "text": text,
-            "concrete": len(CONCRETE_RE.findall(text)),
+            "concrete": concrete(text),
             "label": "",
             "flags": [],
         })
